@@ -5,7 +5,7 @@ import 'package:flutter_remote_control/models/draggable_info_model.dart';
 import 'package:flutter_remote_control/models/draggable_type.dart';
 import 'package:flutter_remote_control/widgets/my_button.dart';
 import 'package:flutter_remote_control/widgets/my_drag_target.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:vibration/vibration.dart';
 
 /// 四种类型拖动按钮
 /// 1 * 1 图片 长宽为 48
@@ -19,8 +19,8 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 class DraggableButton extends StatefulWidget {
 
   const DraggableButton({
-    Key key,
-    @required this.data,
+    Key? key,
+    required this.data,
     this.onDragStarted,
     this.width1: 48.0,
     this.width2: 48.0,
@@ -29,10 +29,10 @@ class DraggableButton extends StatefulWidget {
   }): super(key: key);
 
   final DraggableInfo data;
-  final Function onDragStarted;
+  final Function? onDragStarted;
   final double width1;
   final double width2;
-  final double width3;
+  final double? width3;
   final double fontSize;
   
   @override
@@ -89,11 +89,13 @@ class _DraggableButtonState extends State<DraggableButton> {
               child: child,
             ),
             child: child,
-            onDragStarted: () {
+            onDragStarted: () async {
               /// 开始拖动, 给予振动反馈
-              Vibrate.feedback(FeedbackType.light);
+              if (await Vibration.hasVibrator() ?? false) {
+                Vibration.vibrate(duration: 10);
+              }
               if (widget.onDragStarted != null) {
-                widget.onDragStarted();
+                widget.onDragStarted?.call();
               }
             },
             /// 拖动中实时位置回调

@@ -1,5 +1,4 @@
 
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_remote_control/models/draggable_info_model.dart';
@@ -22,9 +21,9 @@ class _RemoteControlState extends State<RemoteControl> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
-      RenderBox hint = _key.currentContext.findRenderObject();
-      double width = hint.size.width;
+    WidgetsBinding.instance!.addPostFrameCallback((callback) {
+      RenderBox? hint = _key.currentContext!.findRenderObject() as RenderBox?;
+      double width = hint!.size.width;
       double height = hint.size.height;
       Size size = Utils.getPhoneContentSize(height);
       
@@ -66,11 +65,11 @@ class _RemoteControlState extends State<RemoteControl> {
             },
             onAccept: (data) {
               /// 目标被区域接收
-              _panelGlobalKey.currentState.addData(data);
+              _panelGlobalKey.currentState?.addData(data);
             },
             onLeave: (data) {
               /// 目标移出区域
-              _panelGlobalKey.currentState.removeData(data);
+              _panelGlobalKey.currentState?.removeData(data);
             },
             onDrag: (data) {
               /// 监测到有目标在拖动，绘制指示投影。

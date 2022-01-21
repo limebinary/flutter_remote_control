@@ -10,12 +10,12 @@ import 'package:flutter_remote_control/widgets/my_button.dart';
 class PanelView extends StatefulWidget {
 
   const PanelView({
-    Key key,
-    @required this.dropShadowData,
-    @required this.gridSize,
+    Key? key,
+    required this.dropShadowData,
+    required this.gridSize,
   }): super(key: key);
   
-  final List<DraggableInfo> dropShadowData;
+  final List<DraggableInfo?> dropShadowData;
   final double gridSize;
 
   @override
@@ -24,7 +24,7 @@ class PanelView extends StatefulWidget {
 
 class PanelViewState extends State<PanelView> {
 
-  final List<DraggableInfo> data = List();
+  final List<DraggableInfo> data = [];
 
   addData(DraggableInfo info) {
     /// 避免重复添加同一按钮
@@ -33,7 +33,7 @@ class PanelViewState extends State<PanelView> {
     }
   }
 
-  removeData(DraggableInfo info) {
+  removeData(DraggableInfo? info) {
     data.remove(info);
   }
   
@@ -51,9 +51,9 @@ class PanelViewState extends State<PanelView> {
       );
     }
     /// 保存放置按钮的Rect
-    List<Rect> rectList = List();
+    List<Rect> rectList = [];
     /// 临时存储Rect
-    List<Rect> copyList = List();
+    List<Rect> copyList = [];
     
     /// 移除与投影相同的数据，避免投影与放置按钮重复显示
     widget.dropShadowData.forEach((dropShadow) {
@@ -105,8 +105,8 @@ class PanelViewState extends State<PanelView> {
 
     /// 引导指示按钮（投影）
     List<Widget> children1 = List.generate(widget.dropShadowData.length, (index) {
-      Rect rect = computeSize(context, widget.dropShadowData[index]);
-      rect = adjustPosition(widget.dropShadowData[index], rect);
+      Rect rect = computeSize(context, widget.dropShadowData[index]!);
+      rect = adjustPosition(widget.dropShadowData[index]!, rect);
 
       bool overlap = isOverlap(rect, rectList);
       
@@ -115,7 +115,7 @@ class PanelViewState extends State<PanelView> {
       }
       
       var button = MyButton(
-          data: widget.dropShadowData[index],
+          data: widget.dropShadowData[index]!,
           fontSize: 13.0,
           width1: widget.gridSize - 18, // padding 9
           width2: widget.gridSize - 18, // padding 9
@@ -149,9 +149,9 @@ class PanelViewState extends State<PanelView> {
       height = widget.gridSize * 3;
     }
     
-    RenderBox box = context.findRenderObject();
+    RenderBox? box = context.findRenderObject() as RenderBox?;
     // 将全局坐标转换为当前Widget的本地坐标。
-    Offset center = box.globalToLocal(Offset(info.dx, info.dy));
+    Offset center = box!.globalToLocal(Offset(info.dx, info.dy));
     return Rect.fromCenter(
       center: center,
       width: width,
